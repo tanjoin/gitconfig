@@ -2,7 +2,7 @@
 
 /**
  * gitconfig
- * ver. 1.0.1
+ * ver. 1.0.2
  */
 
 const fs = require('fs');
@@ -19,6 +19,13 @@ const config = require(configPath);
 
 const main = (argv) => {
   const argc = argv.length;
+
+  if (argc === 3 && argv[2] === "show") {
+    for (var key in config) {
+      console.log(key + "\t" + config[key]);
+    }
+    return;
+  }
 
   // ssh settings
   if (argc === 4 && argv[2] === "ssh") {

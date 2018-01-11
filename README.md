@@ -5,7 +5,7 @@ githubの設定をする
 ## インストール
 
 ```
-npm install -g tanjoin/gitconfig#1.0.1
+npm install -g tanjoin/gitconfig#1.0.2
 ```
 
 ## 利用方法
