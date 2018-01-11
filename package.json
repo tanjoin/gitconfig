@@ -1,0 +1,21 @@
+{
+  "name": "gitconfig",
+  "version": "1.0.0",
+  "description": "Git にユーザー設定を登録します",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanjoin/gitconfig.git"
+  },
+  "author": "tanjoin",
+  "license": "MIT",
+  "bin": {
+    "gitconfig": "index.js"
+  },
+  "engines": {
+    "node": ">=8.5.0"
+  },
+  "bugs": {
+    "url": "https://github.com/tanjoin/gitconfig/issues"
+  },
+  "homepage": "https://github.com/tanjoin/gitconfig#readme"
+}
