@@ -1,6 +1,6 @@
 {
   "name": "gitconfig",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Git にユーザー設定を登録します",
   "repository": {
     "type": "git",

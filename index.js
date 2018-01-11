@@ -2,18 +2,20 @@
 
 /**
  * gitconfig
- * ver. 1.0.0
+ * ver. 1.0.1
  */
 
 const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
-if (!fs.existsSync('config.json')) {
-  fs.writeFileSync('config.json', '{}', 'utf8');
+const configPath = path.resolve(__dirname, 'config.json');
+
+if (!fs.existsSync(configPath)) {
+  fs.writeFileSync(configPath, '{}', 'utf8');
 }
 
-const config = require('./config.json');
+const config = require(configPath);
 
 const main = (argv) => {
   const argc = argv.length;
@@ -26,7 +28,7 @@ const main = (argv) => {
     } else {
       userconfig.ssh = argv[3];
     }
-    fs.writeFileSync('config.json', JSON.stringify(userconfig), 'utf8');
+    fs.writeFileSync(configPath, JSON.stringify(userconfig), 'utf8');
     return;
   }
 
@@ -38,7 +40,7 @@ const main = (argv) => {
     } else {
       userconfig.user = argv[3];
     }
-    fs.writeFileSync('config.json', JSON.stringify(userconfig), 'utf8');
+    fs.writeFileSync(configPath, JSON.stringify(userconfig), 'utf8');
     return;
   }
 
@@ -50,7 +52,7 @@ const main = (argv) => {
     } else {
       userconfig.email = argv[3];
     }
-    fs.writeFileSync('config.json', JSON.stringify(userconfig), 'utf8');
+    fs.writeFileSync(configPath, JSON.stringify(userconfig), 'utf8');
     return;
   }
 
