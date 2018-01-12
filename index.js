@@ -2,20 +2,21 @@
 
 /**
  * gitconfig
- * ver. 1.0.2
+ * ver. 1.0.3
  */
 
 const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
+const homedir = require('os').homedir();
 
-const configPath = path.resolve(__dirname, 'config.json');
+const configPath = path.resolve(homedir, '.tjconfig');
 
 if (!fs.existsSync(configPath)) {
   fs.writeFileSync(configPath, '{}', 'utf8');
 }
 
-const config = require(configPath);
+const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
 const main = (argv) => {
   const argc = argv.length;
