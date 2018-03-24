@@ -55,8 +55,10 @@ commander.command('rename')
   .description('既存のコミットの名前とメールアドレスを変更する.')
   .option('-n, --name <name>', '書き換え後のユーザー名')
   .option('-e, --email <email>', '書き換え後のメールアドレス')
+  .option('-c, --commit', 'コミットの書き換え')
+  .option('-a, --all', 'すべてのコミットを対象にする')
   .option('-y --yes', '同意する')
-  .action((options) => options.yes ? gitconfig.renameAllCommits(options.name, options.email) : console.error("同意してください."));
+  .action((options) => (options.yes && options.all && options.commit) ? gitconfig.renameAllCommits(options.name, options.email) : console.error("同意してください."));
 
 commander.arguments('<path>')
   .description('regist user data in .git/config')
