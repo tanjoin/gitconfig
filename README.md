@@ -1,6 +1,6 @@
 # gitconfig
 
-githubの設定をする
+gitの設定をする.
 
 ## インストール
 
@@ -25,3 +25,48 @@ git config --local --list
 # ユーザー情報だけ取得したいとき
 git config --local --list | grep "user.*"
 ```
+
+## .tjconfig について
+
+ホームディレクトリに隠しファイルとして生成されます.
+
+### 現行バージョン
+
+```
+2
+```
+
+### データモデル
+
+```json
+{
+  "users": [
+    {
+      "hostname": "tanjoin",
+      "name": "tanjoin",
+      "email": "tanjoin@users.noreply.github.com"
+    },
+    {
+      "hostname": "github.com",
+      "name": "tanjoin",
+      "email": "tanjoin@users.noreply.github.com"
+    },
+    ...
+  ],
+  "version": 2
+}
+```
+
+- users
+  - 登録されたユーザー情報一覧
+  - user
+    - hostname
+      - remote の "origin" の url に設定する hostname
+      - SSH形式のみ対応しています.
+        - 例) `git@tanjoin:tanjoin/gitconfig.git`
+    - name
+      - user.name に設定する値
+    - email
+      - user.email に設定する値
+- version
+  - データモデルのバージョン番号
