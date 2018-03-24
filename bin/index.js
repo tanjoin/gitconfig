@@ -51,10 +51,17 @@ commander.command('email <email>')
   .option('-d, --delete', '')
   .action((email, options) => gitconfig.email(email, options.target, options.delete));
 
+commander.command('rename')
+  .description('既存のコミットの名前とメールアドレスを変更する.')
+  .option('-n, --name <name>', '書き換え後のユーザー名')
+  .option('-e, --email <email>', '書き換え後のメールアドレス')
+  .option('-y --yes', '同意する')
+  .action((options) => options.yes ? gitconfig.renameAllCommits(options.name, options.email) : console.error("同意してください."));
+
 commander.arguments('<path>')
   .description('regist user data in .git/config')
   .option('-t --target <index>', '設定するユーザー情報の番号', parseInt)
-  .action((path, options) => gitconfig.set(path));
+  .action((path, options) => gitconfig.set(path, options.target));
 
 commander.parse(process.argv);
 

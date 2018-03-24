@@ -48,8 +48,8 @@ module.exports = class GitConfig {
     return true;
   }
 
-  set(path, target) {
-    const targetPath = path.resolve(path);
+  set(gitconfigfilepath, target) {
+    const targetPath = path.resolve(gitconfigfilepath);
     if (!fs.existsSync(targetPath)) {
       console.error("Error: wrong path.  \n" + targetPath);
       return;
@@ -177,5 +177,14 @@ module.exports = class GitConfig {
    */
   save() {
     fs.writeFileSync(configPath, JSON.stringify(this.config), 'utf8');
+  }
+
+  renameAllCommits(name, email) {
+    if (!name || !email) {
+      console.error('Error: name and email not found.')
+      return;
+    }
+    return;
+    execSync("git filter-branch -f --env-filter \"GIT_AUTHOR_NAME='" + name + "'; GIT_AUTHOR_EMAIL='" + email + "'; GIT_COMMITTER_NAME='" + name + "'; GIT_COMMITTER_EMAIL='" + email + "';\" HEAD");
   }
 }
