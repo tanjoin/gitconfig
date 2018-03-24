@@ -9,7 +9,7 @@
   "author": "tanjoin",
   "license": "MIT",
   "bin": {
-    "gitconfig": "index.js"
+    "gitconfig": "./bin/index.js"
   },
   "engines": {
     "node": ">=8.5.0"

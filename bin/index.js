@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const GitConfig = require('./gitconfig.js');
+const GitConfig = require('../gitconfig.js');
 const commander = require('commander');
 const homedir = require('os').homedir();
 
