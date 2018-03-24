@@ -57,3 +57,7 @@ commander.arguments('<path>')
   .action((path, options) => gitconfig.set(path));
 
 commander.parse(process.argv);
+
+if (commander.args.length === 0) {
+  commander.help();
+}
