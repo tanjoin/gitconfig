@@ -1,6 +1,6 @@
 {
   "name": "gitconfig",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Git にユーザー設定を登録します",
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/tanjoin/gitconfig/issues"
   },
-  "homepage": "https://github.com/tanjoin/gitconfig#readme"
+  "homepage": "https://github.com/tanjoin/gitconfig#readme",
+  "dependencies": {
+    "commander": "^2.15.1"
+  }
 }

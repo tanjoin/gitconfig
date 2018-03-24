@@ -2,108 +2,58 @@
 
 /**
  * gitconfig
- * ver. 1.0.3
+ * ver. 1.1.0
  */
 
 const fs = require('fs');
 const path = require('path');
-const execSync = require('child_process').execSync;
+const GitConfig = require('./gitconfig.js');
+const commander = require('commander');
 const homedir = require('os').homedir();
 
-const configPath = path.resolve(homedir, '.tjconfig');
+const gitconfig = new GitConfig();
 
-if (!fs.existsSync(configPath)) {
-  fs.writeFileSync(configPath, '{}', 'utf8');
+if (!gitconfig.existsConfig()) {
+  console.error("Error: not found .tjconfig  \n" + gitconfig.configPath);
+  console.log(JSON.stringify(gitconfig.config, null, 2));
+  return;
 }
 
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+/**
+ * Commander
+ */
+commander.version('1.1.0', '-v, --version');
 
-const main = (argv) => {
-  const argc = argv.length;
+commander.command('show')
+  .description('登録情報を表示します.')
+  .action(() => gitconfig.show());
 
-  if (argc === 3 && argv[2] === "show") {
-    for (var key in config) {
-      console.log(key + "\t" + config[key]);
-    }
-    return;
-  }
+commander.command('delete')
+  .option('-t, --target <index>', 'delete target', parseInt)
+  .description('登録しているユーザー情報を削除します.')
+  .action((options) => gitconfig.deleteUser(cmd.target))
 
-  // ssh settings
-  if (argc === 4 && argv[2] === "ssh") {
-    let userconfig = JSON.parse(JSON.stringify(config));
-    if (argv[3] === "--delete") {
-      userconfig.ssh = null;
-    } else {
-      userconfig.ssh = argv[3];
-    }
-    fs.writeFileSync(configPath, JSON.stringify(userconfig), 'utf8');
-    return;
-  }
+commander.command('ssh <hostname>')
+  .description('regists hostname.')
+  .option('-t, --target <index>', 'hostname target', parseInt)
+  .option('-d, --delete', '')
+  .action((hostname, options) => gitconfig.hostname(hostname, options.target, options.delete));
 
-  // user settings
-  if (argc === 4 && argv[2] === "user") {
-    let userconfig = JSON.parse(JSON.stringify(config));
-    if (argv[3] === "--delete") {
-      userconfig.user = null;
-    } else {
-      userconfig.user = argv[3];
-    }
-    fs.writeFileSync(configPath, JSON.stringify(userconfig), 'utf8');
-    return;
-  }
+commander.command('user <name>')
+  .description('regists user.')
+  .option('-t, --target <index>', 'user target', parseInt)
+  .option('-d, --delete', '')
+  .action((name, options) => gitconfig.name(name, options.target, options.delete));
 
-  // email settings
-  if (argc === 4 && argv[2] === "email") {
-    let userconfig = JSON.parse(JSON.stringify(config));
-    if (argv[3] === "---delete") {
-      userconfig.email = null;
-    } else {
-      userconfig.email = argv[3];
-    }
-    fs.writeFileSync(configPath, JSON.stringify(userconfig), 'utf8');
-    return;
-  }
+commander.command('email <email>')
+  .description('regists email.')
+  .option('-t, --target <index>', 'email target', parseInt)
+  .option('-d, --delete', '')
+  .action((email, options) => gitconfig.email(email, options.target, options.delete));
 
-  // .git/config settings
-  if (!config.user || !config.email) {
-    console.error("Error: User config is not found. \n    gitconfig user xxx\n    gitconfig email xxx@yyy.zz");
-    return;
-  }
-  if (argc !== 3) {
-    console.error("Error: wrong arguments.");
-    return;
-  }
-  const targetPath = path.resolve(argv[2]);
+commander.arguments('<path>')
+  .description('regist user data in .git/config')
+  .option('-t --target <index>', '設定するユーザー情報の番号', parseInt)
+  .action((path, options) => gitconfig.set(path));
 
-  if (!fs.existsSync(targetPath)) {
-    console.error("Error: wrong path.  \n" + targetPath);
-    return;
-  }
-
-  let gitconfigPath = null;
-
-  if (fs.statSync(targetPath).isDirectory()) {
-    gitconfigPath = targetPath + "/.git/config";
-    if (!fs.existsSync(gitconfigPath)) {
-      console.error("Error: not found .git/config  \n" + gitconfigPath);
-      return;
-    }
-  } else {
-    console.error("Error: wrong path. This command is only directory path.  \n" + targetPath);
-    return;
-  }
-
-  if (!gitconfigPath) {
-    console.error("Error: not found file path.");
-    return;
-  }
-
-  execSync('git config user.name "' + config.user + '"');
-  execSync('git config user.email "' + config.email + '"');
-  if (config.ssh) {
-    const url = execSync('git config remote.origin.url').toString();
-    execSync('git config remote.origin.url ' + url.replace(/git@(.*):/, "git@" + config.ssh + ":"));
-  }
-};
-
-main(process.argv);
+commander.parse(process.argv);
